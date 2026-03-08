@@ -61,7 +61,10 @@ public class AIProcessor {
         RestTemplate restTemplate = new RestTemplate();
         String endpoint = geminiUrl + geminiApiKey;
 
-        String prompt = "Act as a friendly doctor. Simplify this medical transcription into patient-friendly language. Remove complex jargon: " + rawTranscription;
+        String prompt = "Act as a friendly medical assistant. Read the following medical transcript and extract the information into EXACTLY two sections formatted in Markdown. " +
+                "Section 1 must be titled '### Patient-Friendly Summary' and contain a single, simple paragraph explaining the diagnosis and plan. " +
+                "Section 2 must be titled '### Key Instructions' and contain a bulleted list of actionable steps, medications, or warnings. " +
+                "Do not include the raw transcript. Transcript: " + rawTranscription;
         String safePrompt = prompt.replace("\n", "\\n").replace("\"", "\\\"");
         String requestBody = "{ \"contents\": [ { \"parts\": [ { \"text\": \"" + safePrompt + "\" } ] } ] }";
 
