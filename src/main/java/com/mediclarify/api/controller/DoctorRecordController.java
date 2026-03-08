@@ -12,7 +12,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/doctor-records")
-@CrossOrigin(origins = "http://localhost:3000")
 public class DoctorRecordController {
 
     @Autowired

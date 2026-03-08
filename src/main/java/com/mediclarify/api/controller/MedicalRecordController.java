@@ -9,7 +9,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/documents") // This must match the path in the error!
-@CrossOrigin(origins = "http://localhost:3000")
 public class MedicalRecordController {
 
     @Autowired
