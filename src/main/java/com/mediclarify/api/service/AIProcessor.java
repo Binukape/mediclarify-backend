@@ -61,10 +61,17 @@ public class AIProcessor {
         RestTemplate restTemplate = new RestTemplate();
         String endpoint = geminiUrl + geminiApiKey;
 
-        String prompt = "Act as a medical record summarizer. Read the following medical transcript and extract the information into EXACTLY two sections. " +
-                "Section 1 must be titled 'Patient-Friendly Summary' and contain a single, simple and short paragraph explaining the diagnosis and plan. " +
-                "Section 2 must be titled 'Key Instructions' and contain a bulleted list of actionable steps, medications, or warnings. " +
-                "Do not include the raw transcript. Transcript: " + rawTranscription;
+        String prompt = "You are a medical communication assistant for MediClarify. " +
+                "Your job is to take a transcript of a doctor-patient consultation and produce TWO things. " +
+                "1. Simplified Summary: Rewrite the medical content in plain, patient-friendly language. " +
+                "2. Key Instructions: Extract actionable items (medications, dosage, follow-ups). Format as a bulleted list. " +
+                "Respond in this EXACT format:\n" +
+                "### Patient-Friendly Summary\n" +
+                "[your simplified summary]\n\n" +
+                "### Key Instructions\n" +
+                "- [instruction 1]\n" +
+                "- [instruction 2]\n\n" +
+                "Transcript: " + rawTranscription;
         String safePrompt = prompt.replace("\n", "\\n").replace("\"", "\\\"");
         String requestBody = "{ \"contents\": [ { \"parts\": [ { \"text\": \"" + safePrompt + "\" } ] } ] }";
 
