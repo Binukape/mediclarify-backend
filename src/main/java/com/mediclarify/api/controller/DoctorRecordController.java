@@ -44,6 +44,7 @@ public class DoctorRecordController {
             // UML State: Completed (Record finalized for database)
             DoctorRecord note = new DoctorRecord();
             note.setPatientId(patientId);
+            note.setAudioFilePath(savedFilePath); // Link the raw audio
             note.setRawTranscription(transcribedText);
             note.setSimplifiedText(simplifiedText); // Saving the simplified version!
             doctorRecordRepository.save(note);

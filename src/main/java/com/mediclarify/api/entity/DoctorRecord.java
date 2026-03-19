@@ -20,6 +20,8 @@ public class DoctorRecord {
     @Column(columnDefinition = "TEXT")
     private String simplifiedText;
 
+    private String audioFilePath;
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public UUID getPatientId() { return patientId; }
@@ -28,4 +30,11 @@ public class DoctorRecord {
     public void setRawTranscription(String rawTranscription) { this.rawTranscription = rawTranscription; }
     public String getSimplifiedText() { return simplifiedText; }
     public void setSimplifiedText(String simplifiedText) { this.simplifiedText = simplifiedText; }
+    public String getAudioFilePath() {
+        return audioFilePath;
+    }
+
+    public void setAudioFilePath(String audioFilePath) {
+        this.audioFilePath = audioFilePath;
+    }
 }
