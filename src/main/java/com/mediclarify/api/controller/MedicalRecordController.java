@@ -5,10 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/documents") // This must match the path in the error!
+@CrossOrigin(origins = "http://localhost:3000")
 public class MedicalRecordController {
 
     @Autowired
@@ -34,6 +37,17 @@ public class MedicalRecordController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().body("Error uploading document.");
+        }
+    }
+
+    @GetMapping("/patient/{patientId}")
+    public ResponseEntity<List<String>> getPatientDocuments(@PathVariable UUID patientId) {
+        try {
+            List<String> documents = supabaseStorageService.listPatientDocuments(patientId.toString());
+            return ResponseEntity.ok(documents);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
     }
 }

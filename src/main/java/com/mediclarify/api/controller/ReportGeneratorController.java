@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/reports-generator")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ReportGeneratorController {
 
     @Autowired

@@ -1,10 +1,15 @@
 package com.mediclarify.api.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -31,6 +36,34 @@ public class SupabaseStorageService {
             return patientId + "/" + uniqueFileName;
         } else {
             throw new Exception("Storage rejected file.");
+        }
+    }
+
+    public List<String> listPatientDocuments(String patientId) throws Exception {
+        String endpoint = supabaseUrl + "/storage/v1/object/list/medical-documents?prefix=" + patientId + "/";
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + supabaseKey);
+
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+        ResponseEntity<String> response = restTemplate.exchange(endpoint, HttpMethod.GET, requestEntity, String.class);
+
+        if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode root = mapper.readTree(response.getBody());
+
+            List<String> documentPaths = new ArrayList<>();
+            if (root.isArray()) {
+                for (JsonNode node : root) {
+                    if (node.has("name")) {
+                        documentPaths.add(node.get("name").asText());
+                    }
+                }
+            }
+            return documentPaths;
+        } else {
+            throw new Exception("Unable to list documents.");
         }
     }
 }

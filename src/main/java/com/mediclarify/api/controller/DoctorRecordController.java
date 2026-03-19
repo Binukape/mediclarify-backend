@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/doctor-records")
+@CrossOrigin(origins = "http://localhost:3000")
 public class DoctorRecordController {
 
     @Autowired
@@ -51,5 +53,11 @@ public class DoctorRecordController {
             e.printStackTrace();
             return ResponseEntity.internalServerError().body("Error processing file.");
         }
+    }
+
+    @GetMapping("/patient/{patientId}")
+    public ResponseEntity<List<DoctorRecord>> getPatientConsultations(@PathVariable UUID patientId) {
+        List<DoctorRecord> records = doctorRecordRepository.findByPatientId(patientId);
+        return ResponseEntity.ok(records);
     }
 }
