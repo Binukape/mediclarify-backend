@@ -34,6 +34,7 @@ public class DoctorRecordController {
 
             // UML State: RawAudioSaved
             String savedFilePath = supabaseStorageService.uploadAudioFile(file, patientId.toString());
+            String fullAudioUrl = supabaseStorageService.getPublicUrl("medical-documents", savedFilePath);
 
             // UML State: Transcribing
             String transcribedText = aiProcessor.transcribeAudio(file.getBytes());
@@ -44,7 +45,7 @@ public class DoctorRecordController {
             // UML State: Completed (Record finalized for database)
             DoctorRecord note = new DoctorRecord();
             note.setPatientId(patientId);
-            note.setAudioFilePath(savedFilePath); // Link the raw audio
+            note.setRawAudioUrl(fullAudioUrl); // Link the raw audio full URL
             note.setRawTranscription(transcribedText);
             note.setSimplifiedText(simplifiedText); // Saving the simplified version!
             doctorRecordRepository.save(note);
