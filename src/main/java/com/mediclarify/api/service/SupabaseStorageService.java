@@ -27,6 +27,7 @@ public class SupabaseStorageService {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + supabaseKey);
+        headers.set("apikey", supabaseKey); // CRITICAL for Supabase REST API
         headers.setContentType(MediaType.valueOf(file.getContentType()));
 
         HttpEntity<byte[]> requestEntity = new HttpEntity<>(file.getBytes(), headers);
@@ -36,6 +37,35 @@ public class SupabaseStorageService {
             return patientId + "/" + uniqueFileName;
         } else {
             throw new Exception("Storage rejected file.");
+        }
+    }
+
+    // ADD THIS NEW METHOD TO SupabaseStorageService.java
+    public String uploadDocumentFile(MultipartFile file, String patientId) throws Exception {
+        // 1. Extract the actual file extension (e.g., .pdf, .jpg, .png)
+        String originalName = file.getOriginalFilename();
+        String extension = "";
+        if (originalName != null && originalName.contains(".")) {
+            extension = originalName.substring(originalName.lastIndexOf("."));
+        }
+
+        // 2. Generate a unique name with the correct extension
+        String uniqueFileName = UUID.randomUUID().toString() + extension;
+        String endpoint = supabaseUrl + "/storage/v1/object/medical-documents/" + patientId + "/" + uniqueFileName;
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + supabaseKey);
+        headers.set("apikey", supabaseKey); // CRITICAL for Supabase REST API
+        headers.setContentType(MediaType.valueOf(file.getContentType()));
+
+        HttpEntity<byte[]> requestEntity = new HttpEntity<>(file.getBytes(), headers);
+        ResponseEntity<String> response = restTemplate.exchange(endpoint, HttpMethod.POST, requestEntity, String.class);
+
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return patientId + "/" + uniqueFileName;
+        } else {
+            throw new Exception("Storage rejected document file.");
         }
     }
 

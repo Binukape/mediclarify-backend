@@ -36,7 +36,7 @@ public class MedicalRecordController {
             }
 
             // Store securely in Supabase (reuse your existing storage service)
-            String filePath = supabaseStorageService.uploadAudioFile(file, patientId.toString());
+            String filePath = supabaseStorageService.uploadDocumentFile(file, patientId.toString());
 
             // Save record to database
             MedicalRecord record = new MedicalRecord();
