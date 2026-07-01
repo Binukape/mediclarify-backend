@@ -27,7 +27,8 @@ public class MedicalRecordController {
             @RequestParam("file") MultipartFile file,
             @RequestParam("patientId") UUID patientId) {
         try {
-            if (file.isEmpty()) return ResponseEntity.badRequest().body("File is empty.");
+            if (file.isEmpty())
+                return ResponseEntity.badRequest().body("File is empty.");
 
             // UML Requirement: Validate format (PDF/JPG)
             String contentType = file.getContentType();

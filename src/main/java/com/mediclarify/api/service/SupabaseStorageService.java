@@ -40,10 +40,6 @@ public class SupabaseStorageService {
         }
     }
 
-    public String getPublicUrl(String bucket, String path) {
-        return supabaseUrl + "/storage/v1/object/public/" + bucket + "/" + path;
-    }
-
     // ADD THIS NEW METHOD TO SupabaseStorageService.java
     public String uploadDocumentFile(MultipartFile file, String patientId) throws Exception {
         // 1. Extract the actual file extension (e.g., .pdf, .jpg, .png)

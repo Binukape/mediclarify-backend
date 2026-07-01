@@ -10,7 +10,7 @@ public class MedicalRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    
+
     private UUID patientId;
     private String fileName;
     private String filePath;
